@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="OC与JS 交互在APP设计中越来越重要，不管是现在比较流行的Hybrid 还是 JSPatch，都会涉及到OC与JS的数据交互问题，下面总结一下主要的交互实现方式。 现阶段主要是会使用的技术是：  1、使用UIWebViewDelegate 2、第三方桥接库 WebViewJavascriptBridge （本质是使用UIWebViewDelegate） 3、JavaScriptCore  本文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OC与JS数据交互">
+<meta property="og:url" content="http://yoursite.com/2017/09/22/OC与JS数据交互/index.html">
+<meta property="og:site_name" content="Cooler&#39;s Home">
+<meta property="og:description" content="OC与JS 交互在APP设计中越来越重要，不管是现在比较流行的Hybrid 还是 JSPatch，都会涉及到OC与JS的数据交互问题，下面总结一下主要的交互实现方式。 现阶段主要是会使用的技术是：  1、使用UIWebViewDelegate 2、第三方桥接库 WebViewJavascriptBridge （本质是使用UIWebViewDelegate） 3、JavaScriptCore  本文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-22T09:09:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OC与JS数据交互">
+<meta name="twitter:description" content="OC与JS 交互在APP设计中越来越重要，不管是现在比较流行的Hybrid 还是 JSPatch，都会涉及到OC与JS的数据交互问题，下面总结一下主要的交互实现方式。 现阶段主要是会使用的技术是：  1、使用UIWebViewDelegate 2、第三方桥接库 WebViewJavascriptBridge （本质是使用UIWebViewDelegate） 3、JavaScriptCore  本文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/22/OC与JS数据交互/"/>
+
+
+
+
+
+  <title>OC与JS数据交互 | Cooler's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooler's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">日积月累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-分类"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/OC与JS数据交互/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HoCooler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooler's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OC与JS数据交互</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-22T16:52:09+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>OC与JS 交互在APP设计中越来越重要，不管是现在比较流行的Hybrid 还是 JSPatch，都会涉及到OC与JS的数据交互问题，下面总结一下主要的交互实现方式。</p>
+<p>现阶段主要是会使用的技术是：</p>
+<ul>
+<li>1、使用UIWebViewDelegate</li>
+<li>2、第三方桥接库 WebViewJavascriptBridge （本质是使用UIWebViewDelegate）</li>
+<li>3、JavaScriptCore</li>
+</ul>
+<p>本文主要介绍JavaScriptCore的主要用法，WebViewJavascriptBridge的用法见其他博客</p>
+<a id="more"></a>
+<h1 id="OC调用JS"><a href="#OC调用JS" class="headerlink" title="OC调用JS"></a>OC调用JS</h1><h2 id="stringByEvaluatingJavaScriptFromString"><a href="#stringByEvaluatingJavaScriptFromString" class="headerlink" title="stringByEvaluatingJavaScriptFromString :"></a>stringByEvaluatingJavaScriptFromString :</h2><p>只限于webView内使用，使用方法类似evaluateScript<br>在webView的delegate中，添加代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[webView stringByEvaluatingJavaScriptFromString:@&quot;alert(&apos;test js OC&apos;)&quot;]; //1</div><div class="line">height = [[webView stringByEvaluatingJavaScriptFromString:@&quot;document.body.clientHeight&quot;] floatValue];//2</div></pre></td></tr></table></figure></p>
+<p>1处：可以发现在加载webView中弹框</p>
+<p>2处: 可以获取webView设置的高度，在Hybrid中可以将webView和native进行混排</p>
+<h2 id="JavaScriptCore"><a href="#JavaScriptCore" class="headerlink" title="JavaScriptCore"></a>JavaScriptCore</h2><p>iOS 7 引入了 JavaScriptCore 库，它把 WebKit 的 JavaScript 引擎用 Objective-C 封装，提供了简单，快速以及安全的方式接入世界上最流行的语言。</p>
+<p>最主要的意义是执行JS代码，脱离了webView的依赖。</p>
+<p>JavaScriptCore 主要包含的功能或者组件，可以看它的头文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#ifndef JavaScriptCore_h</div><div class="line">#define JavaScriptCore_h</div><div class="line"></div><div class="line">#include &lt;JavaScriptCore/JavaScript.h&gt;</div><div class="line">#include &lt;JavaScriptCore/JSStringRefCF.h&gt;</div><div class="line"></div><div class="line">#if defined(__OBJC__) &amp;&amp; JSC_OBJC_API_ENABLED</div><div class="line"></div><div class="line">#import &quot;JSContext.h&quot;</div><div class="line">#import &quot;JSValue.h&quot;</div><div class="line">#import &quot;JSManagedValue.h&quot;</div><div class="line">#import &quot;JSVirtualMachine.h&quot;</div><div class="line">#import &quot;JSExport.h&quot;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#endif /* JavaScriptCore_h */</div><div class="line">JSContext (详细见.h声明)</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>JSContext (详细见.h声明)</p>
+<blockquote>
+<p>@discussion A JSContext is a JavaScript execution environment. All<br>JavaScript execution takes place within a context, and all JavaScript values<br>are tied to a context.</p>
+<p>JS执行的环境，同时也通过JSVirtualMachine管理着所有对象的生命周期，每个JSValue都和JSContext相关联并且强引用context。</p>
+</blockquote>
+</li>
+<li><p>JSValue</p>
+<blockquote>
+<p>@discussion A JSValue is a reference to a JavaScript value. Every JSValue<br>originates from a JSContext and holds a strong reference to it.<br>When a JSValue instance method creates a new JSValue, the new value<br>originates from the same JSContext.</p>
+<p>All JSValues values also originate from a JSVirtualMachine<br>(available indirectly via the context property). It is an error to pass a<br>JSValue to a method or property of a JSValue or JSContext originating from a<br>different JSVirtualMachine. Doing so will raise an Objective-C exception.</p>
+<p>JS对象在JSVirtualMachine中的一个强引用，其实就是Hybird对象。我们对JS的操作都是通过它。并且每个JSValue都是强引用一个context。同时，OC和JS对象之间的转换也是通过它。</p>
+</blockquote>
+</li>
+</ul>
+<p>{image} 待补充</p>
+<ul>
+<li><p>SManagedValue</p>
+<blockquote>
+<p>@discussion JSManagedValue represents a “conditionally retained” JSValue.<br>“Conditionally retained” means that as long as the JSManagedValue’s<br>JSValue is reachable through the JavaScript object graph,<br>or through the Objective-C object graph reported to the JSVirtualMachine using<br>addManagedReference:withOwner:, the corresponding JSValue will<br>be retained. However, if neither graph reaches the JSManagedValue, the<br>corresponding JSValue will be released and set to nil.</p>
+<p>The primary use for a JSManagedValue is to store a JSValue in an Objective-C<br>or Swift object that is exported to JavaScript. It is incorrect to store a JSValue<br>in an object that is exported to JavaScript, since doing so creates a retain cycle.</p>
+<p>JS和OC对象的内存管理辅助对象。由于JS内存管理是垃圾回收，并且JS中的对象都是强引用，而OC是引用计数。如果双方相互引用，势必会造成循环引用，而导致内存泄露。我们可以用JSManagedValue保存JSValue来避免。</p>
+</blockquote>
+</li>
+<li><p>JSVirtualMachine<br>&gt;<br>@discussion An instance of JSVirtualMachine represents a single JavaScript “object space”<br>or set of execution resources. Thread safety is supported by locking the<br>virtual machine, with concurrent JavaScript execution supported by allocating<br>separate instances of JSVirtualMachine.<br>&gt;<br>JS运行的虚拟机，有独立的堆空间和垃圾回收机制。<br>&gt;<br>线程安全</p>
+</li>
+<li><p>JSExport</p>
+<blockquote>
+<p>@protocol<br>@abstract JSExport provides a declarative way to export Objective-C objects and<br>classes – including properties, instance methods, class methods, and<br>initializers – to JavaScript. 更多用法详见API，还有例子。</p>
+<p>一个协议，如果JS对象想直接调用OC对象里面的方法和属性，那么这个OC对象只要实现这个JSExport协议就可以了。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h2><blockquote>
+<p>创建一个JSContext对象，然后将JS代码加载到context里面，最后取到这个函数对象，调用callWithArguments这个方法进行参数传值。（JS里面函数也是对象）</p>
+<p>对 JSContext 和 JSValue 实例使用下标的方式我们可以很容易地访问我们之前创建的 context 的任何值。JSContext 需要一个字符串下标，而 JSValue 允许使用字符串或整数标来得到里面的对象和数组：</p>
+<p>JSValue 包装了一个 JavaScript 函数，我们可以从 Objective-C / Swift 代码中使用 Foundation 类型作为参数来直接调用该函数。再次，JavaScriptCore 很轻松的处理了这个桥接</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">JSContext *context = [[JSContext alloc] init];</div><div class="line">JSValue *numValue =  [context evaluateScript:@&quot;var num = 5 + 5&quot;];</div><div class="line">NSLog(@&quot;%@&quot;, [numValue toString]);//undefined</div><div class="line"></div><div class="line">[context evaluateScript:@&quot;var names = [&apos;Grace&apos;, &apos;Ada&apos;, &apos;Margaret&apos;]&quot;];</div><div class="line">JSValue *names = context[@&quot;names&quot;];</div><div class="line">NSLog(@&quot;%@&quot;, [names[0] toString]);//Grace</div><div class="line"></div><div class="line">[context evaluateScript:@&quot;var triple = function(value) &#123; return value * 3 &#125;&quot;];</div><div class="line">JSValue *tripleNum = [context evaluateScript:@&quot;triple(num)&quot;];</div><div class="line">NSLog(@&quot;%@&quot;, [tripleNum toNumber]);// 30</div><div class="line">JSValue *tripleFunction = context[@&quot;triple&quot;];</div><div class="line">JSValue *result = [tripleFunction callWithArguments:@[@5] ];</div><div class="line">  NSLog(@&quot;Five tripled: %d&quot;, [result toInt32]); //30</div></pre></td></tr></table></figure>
+<ul>
+<li>错误处理</li>
+</ul>
+<p>JSContext 还有另外一个有用的招数：通过设置上下文的 exceptionHandler 属性，你可以观察和记录语法，类型以及运行时错误。 exceptionHandler 是一个接收一个 JSContext 引用和异常本身的回调处理，可以根据信息查看上下文以及错误类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">context.exceptionHandler = ^(JSContext *context, JSValue *exception) &#123;</div><div class="line">   NSLog(@&quot;JS Error: %@ , %@&quot;, context, exception);</div><div class="line">&#125;;</div><div class="line">//如修改上面代码，都会调用到</div><div class="line">JSValue *tripleNum = [context evaluateScript:@&quot;triple1(num)&quot;];</div><div class="line">JSValue *tripleFunction = context[@&quot;triple1&quot;];</div><div class="line">[context evaluateScript:@&quot;function multiply(value1, value2) &#123; return value1 * value2 &quot;];</div></pre></td></tr></table></figure>
+<p>需要注意的是，这个赋值必须在函数调用JS函数之间，否则无法调用到，建议直接跟JSContext定义在一起</p>
+<h1 id="JS调用OC"><a href="#JS调用OC" class="headerlink" title="JS调用OC"></a>JS调用OC</h1><h2 id="WebViewJavascriptBridge"><a href="#WebViewJavascriptBridge" class="headerlink" title="WebViewJavascriptBridge"></a>WebViewJavascriptBridge</h2><p>主要是注册handler，进行消息的回调，与回调block一致。</p>
+<h2 id="JavaScript-Core"><a href="#JavaScript-Core" class="headerlink" title="JavaScript Core"></a>JavaScript Core</h2><p>通过context，可以block和JSExport protocol 进行JS调用OC</p>
+<h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><p>通过context，将block，转化成JS的function，通过执行这个function，调用OC里的block, 因为在JS中调用，需要注意一些桥接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">self.context = [[JSContext alloc] init];</div><div class="line">self.context[@&quot;add&quot;] = ^(NSInteger a, NSInteger b) &#123;</div><div class="line">    NSLog(@&quot;---%@&quot;, @(a + b));</div><div class="line">&#125;;</div><div class="line">[self.context evaluateScript:@&quot;add(2,3)&quot;];</div><div class="line">//等同js代码直接调用add(2,3)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>由于 block 可以保有变量引用，而且 JSContext 也强引用它所有的变量，为了避免强引用循环需要特别小心。避免保有你的 JSContext 或一个 block 里的任何 JSValue。相反，使用 [JSContext currentContext] 得到当前上下文，并把你需要的任何值用参数传递。</p>
+</blockquote>
+<h3 id="JSExport"><a href="#JSExport" class="headerlink" title="JSExport"></a>JSExport</h3><p>自定义一个协议遵守JSExport协议，然后想要导出这些方法的类再遵守这个协议，就可以在JS中调用OC的方法<br>通过JSContext将类导出，即设置JS对象中与OC的一种关联<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">OC中</div><div class="line">context[@&quot;SomeClass&quot;] = [SomeClass class];</div><div class="line">or</div><div class="line">context[@&quot;SomeClass&quot;] = self;</div><div class="line"></div><div class="line">JS中</div><div class="line">SomeClass.method -&gt; self.method</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>JSExportAs</p>
+<p>Objective-C 的方法 createWithFirstName:lastName: 变成了在JavaScript中的 createWithFirstNameLastName()<br>OC中如果参数很多，那么写起来就很不方便，为了解决参数的问题，JSExportAs<br>JSExportAs(createWithFirstName,</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(instancetype) createWithFirstName:(NSString )firstName lastName:(NSString )lastName</div><div class="line">);</div></pre></td></tr></table></figure>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>OC使用的ARC，JS使用的是垃圾回收机制，正常情况下，OC和JS对象之间内存管理都无需我们去关心。不过需要注意以下几点：</p>
+<ul>
+<li><p>不要在block里面直接使用context，或者使用外部的JSValue对象,用参数进行传递</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//错误代码：</div><div class="line">self.context[@&quot;block&quot;] = ^()&#123;</div><div class="line">     JSValue *value = [JSValue valueWithObject:@&quot;aaa&quot; inContext:self.context];</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  //一个比较隐蔽的</div><div class="line">   JSValue *value = [JSValue valueWithObject:@&quot;ssss&quot; inContext:self.context];</div><div class="line">  self.context[@&quot;log&quot;] = ^()&#123;</div><div class="line">      NSLog(@&quot;%@&quot;,value);</div><div class="line">  &#125;;</div><div class="line">  //block捕获并持有外部的value，value强持有context和它管理的JS对象的。</div><div class="line"></div><div class="line">  //正确的做法，str对象是JS那边传递过来。</div><div class="line">  self.context[@&quot;log&quot;] = ^(NSString *str)&#123;</div><div class="line">      NSLog(@&quot;%@&quot;,str);</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>OC对象不要用属性直接保存JSValue对象，通过内存管理辅助对象JSManagedValue</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[self.context evaluateScript:</div><div class="line">   @&quot;function callback ()&#123;&#125;;</div><div class="line">    function setObj(obj) &#123;</div><div class="line">    this.obj = obj;</div><div class="line">    obj.jsValue=callback;</div><div class="line">&#125;&quot;];</div><div class="line">//JS对象保留了传进来的obj，最后，JS将自己的回调callback赋值给了obj，方便obj下次回调给JS；由于JS那边保存了obj，而且obj这边也保留了JS的回调。这样就形成了循环引用。</div><div class="line"></div><div class="line">  //重写setter方法</div><div class="line">- (void)setJsValue:(JSValue *)jsValue</div><div class="line">&#123;</div><div class="line">    _managedValue = [JSManagedValue managedValueWithValue:jsValue];</div><div class="line"></div><div class="line">    [[[JSContext currentContext] virtualMachine] addManagedReference:_managedValue </div><div class="line">    withOwner:self];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>不要在不同的 JSVirtualMachine 之间进行传递JS对象。</li>
+</ul>
+<blockquote>
+<p>一个 JSVirtualMachine可以运行多个context，由于都是在同一个堆内存和同一个垃圾回收下，所以相互之间传值是没问题的。但是如果在不同的 JSVirtualMachine传值，垃圾回收就不知道他们之间的关系了，可能会引起异常。</p>
+</blockquote>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><blockquote>
+<p>JavaScriptCore 线程是安全的，每个context运行的时候通过lock关联的JSVirtualMachine。如果要进行并发操作，可以创建多个JSVirtualMachine实例进行操作。</p>
+</blockquote>
+<h1 id="获得webView的context"><a href="#获得webView的context" class="headerlink" title="获得webView的context"></a>获得webView的context</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">self.context = [webView valueForKeyPath:@&quot;documentView.webView.mainFrame.javaScriptContext&quot;];</div></pre></td></tr></table></figure>
+<p>这个方法是苹果私有属性，</p>
+<blockquote>
+<p>这边要注意的是每个页面加载完都是一个新的context，但是都是同一个JSVirtualMachine。如果JS调用OC方法进行操作UI的时候，请注意线程是不是主线程。</p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://nshipster.cn/javascriptcore/" target="_blank" rel="external">http://nshipster.cn/javascriptcore/</a></p>
+<p><a href="http://www.jianshu.com/p/a329cd4a67ee" target="_blank" rel="external">http://www.jianshu.com/p/a329cd4a67ee</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/22/iOS-内存检查/" rel="next" title="iOS 内存检查">
+                <i class="fa fa-chevron-left"></i> iOS 内存检查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/22/开源库学习-SDWebImage/" rel="prev" title="开源库学习 | SDWebImage">
+                开源库学习 | SDWebImage <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avartar.jpg"
+              alt="HoCooler" />
+          
+            <p class="site-author-name" itemprop="name">HoCooler</p>
+            <p class="site-description motion-element" itemprop="description">iOS</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OC调用JS"><span class="nav-number">1.</span> <span class="nav-text">OC调用JS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#stringByEvaluatingJavaScriptFromString"><span class="nav-number">1.1.</span> <span class="nav-text">stringByEvaluatingJavaScriptFromString :</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScriptCore"><span class="nav-number">1.2.</span> <span class="nav-text">JavaScriptCore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用方法"><span class="nav-number">1.3.</span> <span class="nav-text">调用方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JS调用OC"><span class="nav-number">2.</span> <span class="nav-text">JS调用OC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WebViewJavascriptBridge"><span class="nav-number">2.1.</span> <span class="nav-text">WebViewJavascriptBridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript-Core"><span class="nav-number">2.2.</span> <span class="nav-text">JavaScript Core</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block"><span class="nav-number">2.2.1.</span> <span class="nav-text">Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSExport"><span class="nav-number">2.2.2.</span> <span class="nav-text">JSExport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">2.2.3.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">2.2.4.</span> <span class="nav-text">线程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获得webView的context"><span class="nav-number">3.</span> <span class="nav-text">获得webView的context</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HoCooler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ruby,正则表达式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Ruby对正则表达式支持非常好（built-in support），下面我将近段时间学习的Ruby做个总结，包括  Ruby中正则表达式可以做什么 正则表达式的用法，包括匹配的方法，替换，分组匹配等 使用中需要注意的地方 学习资源。  本文中，为了便于描述，将一个正则表达式称为一个模式（pattern）。">
+<meta name="keywords" content="Ruby,正则表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby正则表达式学习记录">
+<meta property="og:url" content="http://yoursite.com/2017/10/25/Ruby正则表达式学习记录/index.html">
+<meta property="og:site_name" content="Cooler&#39;s Home">
+<meta property="og:description" content="Ruby对正则表达式支持非常好（built-in support），下面我将近段时间学习的Ruby做个总结，包括  Ruby中正则表达式可以做什么 正则表达式的用法，包括匹配的方法，替换，分组匹配等 使用中需要注意的地方 学习资源。  本文中，为了便于描述，将一个正则表达式称为一个模式（pattern）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-26T07:31:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby正则表达式学习记录">
+<meta name="twitter:description" content="Ruby对正则表达式支持非常好（built-in support），下面我将近段时间学习的Ruby做个总结，包括  Ruby中正则表达式可以做什么 正则表达式的用法，包括匹配的方法，替换，分组匹配等 使用中需要注意的地方 学习资源。  本文中，为了便于描述，将一个正则表达式称为一个模式（pattern）。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/25/Ruby正则表达式学习记录/"/>
+
+
+
+
+
+  <title>Ruby正则表达式学习记录 | Cooler's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooler's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">日积月累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-分类"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/25/Ruby正则表达式学习记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HoCooler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooler's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ruby正则表达式学习记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-25T17:07:00+08:00">
+                2017-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Ruby对正则表达式支持非常好（built-in support），下面我将近段时间学习的Ruby做个总结，包括</p>
+<ul>
+<li>Ruby中正则表达式可以做什么</li>
+<li>正则表达式的用法，包括匹配的方法，替换，分组匹配等</li>
+<li>使用中需要注意的地方</li>
+<li>学习资源。</li>
+</ul>
+<p>本文中，为了便于描述，将一个正则表达式称为一个模式（pattern）。</p>
+<a id="more"></a>
+<h1 id="Ruby中正则表达式定义"><a href="#Ruby中正则表达式定义" class="headerlink" title="Ruby中正则表达式定义"></a>Ruby中正则表达式定义</h1><p>就跟Ruby其他对象一样，正则表达式也是Ruby中的一个对象，是Regexp类的实例。因此它可以被当作参数进行传递，这更便于其在Ruby中的应用。</p>
+<h2 id="正则表达式的定义"><a href="#正则表达式的定义" class="headerlink" title="正则表达式的定义"></a>正则表达式的定义</h2><p>主要有三种定义方式//, %r、Regexp.new()内。这三种效果相同，实质都是新建了一个Regexp的类，如定义/cat/, %r{cat},Regexp.new(“cat”),都是匹配包含cat的字符串，不过它们之间也有区别</p>
+<ul>
+<li>在//之间，要进行转义</li>
+<li>在%r{}内，不用进行转义</li>
+<li>Regexp.new()内，不用进行转义</li>
+</ul>
+<p>/mm\/dd/，Regexp.new(“mm/dd”)，%r{mm/dd}三者效果相同，而且这三种定义方式都可以加入任意的Ruby的表达式（expressions）#{}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">str1 = 1+2</div><div class="line">str2 = &quot;Hello&quot;</div><div class="line">str3 = `echo hello`</div><div class="line">str4 = %x&#123;echo hello&#125;</div><div class="line">exp1 = /#&#123;str1&#125;/</div><div class="line">exp2 = %r&#123;#&#123;str2&#125;&#125;</div><div class="line">exp3 = /#&#123;str4&#125;/</div><div class="line">exp4 = Regexp.new(&quot;#&#123;str3&#125;&quot;)</div><div class="line">p exp1, exp2, exp3, exp4, exp5</div><div class="line">  //All output =&gt; /3/ /hello/ /hello\n/ /hello\n/</div></pre></td></tr></table></figure>
+<p>在使用正则表达式时，主要是用//语法，因为它让我们很迅速的写出一个正则表达式。但如果某个模式中需要进行大量的转义，我们可以通过%r语法也可以给我们比较便利的定义一个正则表达式。而标准的Regexp.new的定义方法相对比较麻烦，不符合ruby简介方便的特点。</p>
+<p>Regexp.new方法的参数，除可以传递字符串之外，可以传入Regexp对象（Regexp对象的options也会被一起传入），当然new方法中还包含其他参数，主要是指定他的options</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">p Regexp.new(&apos;dog&apos;, Regexp::EXTENDED)   #=&gt; /dog/x</div><div class="line">p Regexp.new(&apos;cat&apos;, true)               #=&gt; /cat/i</div><div class="line">p Regexp.new(r1)                       #=&gt; /dog/x</div><div class="line">p Regexp.new(r2)                        #=&gt; /cat/i</div><div class="line"></div><div class="line">output</div><div class="line">/dog/x</div><div class="line">/cat/i</div><div class="line">/dog/x</div><div class="line">/cat/i</div><div class="line"></div><div class="line">#All options</div><div class="line">   p Regexp.new(&quot;abc&quot;, Regexp::IGNORECASE)                     #=&gt; /abc/i</div><div class="line">   p Regexp.new(&quot;abc&quot;, Regexp::MULTILINE)                      #=&gt; /abc/m</div><div class="line">   p Regexp.new(&quot;abc # Comment&quot;, Regexp::EXTENDED)             #=&gt; /abc # Comment/x #这里并不是注释，而是匹配包含“abc#Comment”的字符串</div><div class="line">   p Regexp.new(&quot;abc&quot;, Regexp::NOENCODING)                      #=&gt; /abc/n</div><div class="line">   p Regexp.new(&quot;abc&quot;, Regexp::FIXEDENCODING)                  #=&gt; /abc/</div><div class="line">   p Regexp.new(&quot;abc&quot;, Regexp::IGNORECASE | Regexp::MULTILINE) #=&gt; /abc/mi</div></pre></td></tr></table></figure>
+<p>options选项是对正则表达式的功能的扩充，其中/i（IGNORECASE）代表忽略模式和待匹配字符串的大小写问题，/x（EXTENDED）代表忽略正则中的空格，因为复杂的正则表达式比较难阅读，我们可以通过空格和换行对其进行分割，而且在新行的尾端还可以进行注释#commnet，方便阅读。注意这里是忽略模式中空格，不是待匹配字符串中的空格。/m(MULTILINE)主要是可以使’.’匹配到’\n’，正常情况下，’.’可以匹配除’\n’外的所有字符. /o表示仅仅执行一次#{}。关于编码的问题，后续补充<br>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">p /Cat/ =~ &quot;Oh.Cat No&quot;      #=&gt;3</div><div class="line">p /cat/ =~ &quot;Oh.Cat No&quot;      #=&gt;nil</div><div class="line">p /cat/i =~ &quot;Oh.Cat No&quot;     #=&gt;3</div><div class="line">p /Ca t/ =~ &quot;Oh.Cat No&quot;     #=&gt;nil</div><div class="line">p /Ca t/x =~ &quot;Oh.Cat No&quot;    #=&gt;3</div><div class="line">p /Ca t/x =~ &quot;Oh.Ca t No&quot;   #=&gt;nil 注意x不能忽略待测字符串中的空格</div><div class="line">p /Cat/ =~ &quot;Oh.\nCat No&quot;    #=&gt;4 可以匹配包含\n的字符串</div><div class="line">p /Cat/ =~ &quot;Oh.C\nat No&quot;    #=&gt;nil</div><div class="line">p /C.at/m =~ &quot;Oh.C\nat No&quot;  #=&gt;3</div></pre></td></tr></table></figure>
+<p>options是对正则表达式功能的扩展，探其究竟，options选项实际是枚举类型，用一个二进制位代表一个options，因此可以通过｜混合使用，比如“Regexp::IGNORECASE | Regexp::MULTILINE”，实际对应的就是/mi，其值为m与i对应值的和. /cat/默认情况options为nil，即/cat/.options 输出为0，Regexp.new方法中含有参数true对应Regexp::IGNORECASE，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Regexp::IGNORECASE                  #=&gt; 1</div><div class="line">Regexp::EXTENDED                    #=&gt; 2</div><div class="line">Regexp::MULTILINE                   #=&gt; 4</div><div class="line"></div><div class="line">/cat/.options                       #=&gt; 0</div><div class="line">/cat/ix.options                     #=&gt; 3</div><div class="line">Regexp.new(&apos;cat&apos;, true).options     #=&gt; 1</div><div class="line"></div><div class="line">r = /cat/ix</div><div class="line">Regexp.new(r.source, r.options)     #=&gt; /cat/ix ＃可以通过options值初始化一个Regexp</div><div class="line">p Regexp.new(r.source, 3)           #=&gt; /cat/ix</div></pre></td></tr></table></figure>
+<p>Regexp中还包含其他API，比如判断二个exp是否相等，/abc/ == /abc/x，结果为false，=== 可以判断与字符串是否全匹配，输出false or true .</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/^[a-z]*$/ === &quot;HELLO&quot; #=&gt; false</div><div class="line">/^[A-Z]*$/ === &quot;HELLO&quot; #=&gt; true</div><div class="line">/^[A-Z]*$/ === &quot;HELLO1&quot; #=&gt; false</div></pre></td></tr></table></figure>
+<p>其他的API这里不做介绍，有兴趣的可以看<a href="http://ruby-doc.org/core-1.9.3/Regexp.html" target="_blank" rel="external">这里</a> 列出了所有Method方法。至此我们已经知道exp的定义方法，具体用法会在下文中描述。</p>
+<h2 id="正则表达式作用"><a href="#正则表达式作用" class="headerlink" title="正则表达式作用"></a>正则表达式作用</h2><ul>
+<li>测试字符串是否符合某个模式</li>
+<li>对字符串根据模式进行拆分（提取字符串中符合模式的部分）</li>
+<li>根据模式匹配结果对字符串进行替换</li>
+</ul>
+<h1 id="Ruby中正则表达式用法"><a href="#Ruby中正则表达式用法" class="headerlink" title="Ruby中正则表达式用法"></a>Ruby中正则表达式用法</h1><p>在上文中已经讲解了正则表达式的定义，本节主要说下正则表达的实际使用，即如何进行匹配及匹配返回结果如何使用。</p>
+<h2 id="正则表达式匹配结果"><a href="#正则表达式匹配结果" class="headerlink" title="正则表达式匹配结果"></a>正则表达式匹配结果</h2><p>为了在下一小节“如何匹配”更好的理解，我把这一部分提前，不过基于第一部分的讲解，理解也没有难度。</p>
+<h3 id="＝"><a href="#＝" class="headerlink" title="＝~"></a>＝~</h3><ul>
+<li><p>=~肯定匹配, !~否定匹配。=~表达式返回匹配到的位置索引，失败返回nil，所以我们可以把匹配结果当作if条件（在Ruby中if(0)被视为true，只有nil和false才当做失败，再一次说明Ruby对正则的支持），⚠️：符号左右内容可交换</p>
+</li>
+<li><p>通常我们可以需要（）进行分组，它会存储匹配的结果，变量的数量与圆括号的对数相等，在模式内，\1代表第一个园括号，\n对表第n个园括号，在模式外，通过$n可以获得第n个园括号的匹配结果。⚠️：括号嵌套的情况</p>
+</li>
+<li><p>通过=~方法，我们只可以取得匹配的索引位置，对于”begin7catend” =~ /\d/，我们不能通过方便获得匹配到的结果（此处指7，假设我们后续需要继续使用它）”。虽然我们可以通过分组的方法获得（见上文），但对于简单的正则表达式而言，我们或许不需要使用分组方法，可通过系统变量$&amp;获得匹配结果，除此之外， $`返回匹配前内容， $’ 返回匹配后内容，这样书写不便于阅读，因此match方法提供更友好的API名称</p>
+</li>
+</ul>
+<h3 id="match方法"><a href="#match方法" class="headerlink" title="match方法"></a>match方法</h3><ul>
+<li>Ruby中正则表达式还给我们提供了match方法，便于将我们匹配的结果输出。</li>
+</ul>
+<p>regexp#match(str)，返回MatchData对象，一个数组，从0开始，长度为匹配的数量(注意含有圆括号的情况)。还有match.pre_match返回匹配前内容，match.post_match返回匹配后内容,如果匹配失败返回nil</p>
+<ul>
+<li>我们同样可以通过系统变量$&amp;、$’，$`</li>
+</ul>
+<h3 id="String中的scan方法"><a href="#String中的scan方法" class="headerlink" title="String中的scan方法"></a>String中的scan方法</h3><p>regexp#match()只能匹配一次，如果想匹配所有要用可以使用String中的scan方法，它会返回Array，scan(pattern) → array 或者后接一个block：scan(pattern) {|match, …| block }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">＃获取匹配值</div><div class="line">/cat/ =~ &quot;dog and cat end&quot;</div><div class="line">p &quot;#$`-&gt;#$&amp;&lt;- #$&apos;&quot; #=&gt;&quot;dog and -&gt;cat&lt;-  end&quot;</div><div class="line">mt = /cat/.match(&quot;bigcatcomes&quot;)</div><div class="line">p &quot;#$`-&gt;#$&amp;&lt;-#$&apos;&quot; #=&gt;&quot;big-&gt;cat&lt;-comes&quot;</div><div class="line"></div><div class="line">#=~中分组的匹配结果</div><div class="line">idx1 = /(\d\d):(\d\d)(..)/ =~ &quot;12:50am&quot;</div><div class="line">p idx1  # =&gt; 0</div><div class="line">p &quot;#$0&quot; #=&gt;&quot;/Users/cooler/Hacker/ruby/test.rb&quot;</div><div class="line">p &quot;Hour is #$1, minute #$2&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line">p &quot;#$4&quot; #=&gt; &quot;&quot;</div><div class="line">#多添加一个((\d\d):(\d\d))注意$n的变化</div><div class="line">p idx2 = /((\d\d):(\d\d))(..)/ =~ &quot;12:50am&quot; # =&gt; 0</div><div class="line">p &quot;#$0&quot; #=&gt;&quot;/Users/cooler/Hacker/ruby/test.rb&quot;</div><div class="line">p &quot;Time is #$1&quot;# =&gt; &quot;Time is 12:50&quot;</div><div class="line">p &quot;Hour is #$2, minute #$3&quot;</div><div class="line">p &quot;AM/PM is #$4&quot; # =&gt; &quot;AM/PM is am&quot;</div><div class="line">p &quot;#$5&quot; #=&gt; &quot;&quot;</div><div class="line"></div><div class="line">#match方法实现上面的匹配</div><div class="line">md = /(\d\d):(\d\d)(..)/.match(&quot;12:50am&quot;) #md为一个MatchData对象</div><div class="line">&quot;Hour is #&#123;md[1]&#125;, minute #&#123;md[2]&#125;&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line">md = /((\d\d):(\d\d))(..)/.match(&quot;12:50am&quot;)</div><div class="line">&quot;Time is #&#123;md[1]&#125;&quot; # =&gt; &quot;Time is 12:50&quot;</div><div class="line">&quot;Hour is #&#123;md[2]&#125;, minute #&#123;md[3]&#125;&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line">&quot;AM/PM is #&#123;md[4]&#125;&quot; # =&gt; &quot;AM/PM is am&quot;</div><div class="line"> p md[5]    #=&gt; nil</div><div class="line"></div><div class="line">#scan方法</div><div class="line">p &quot;abcabcabz&quot;.scan(%r&#123;abc&#125;) #=&gt;[&quot;abc&quot;, &quot;abc&quot;]</div><div class="line">a = &quot;cruel world&quot;</div><div class="line">a.scan(/\w+/)        #=&gt; [&quot;cruel&quot;, &quot;world&quot;]</div><div class="line">a.scan(/.../)        #=&gt; [&quot;cru&quot;, &quot;el &quot;, &quot;wor&quot;]</div><div class="line">a.scan(/(...)/)      #=&gt; [[&quot;cru&quot;], [&quot;el &quot;], [&quot;wor&quot;]]</div><div class="line">a.scan(/(..)(..)/)   #=&gt; [[&quot;cr&quot;, &quot;ue&quot;], [&quot;l &quot;, &quot;wo&quot;]]</div><div class="line">a.scan(/\w+/) &#123;|w| print &quot;&lt;&lt;#&#123;w&#125;&gt;&gt; &quot; &#125; #=&gt; &lt;&lt;cruel&gt;&gt; &lt;&lt;world&gt;&gt;</div><div class="line">a.scan(/(.)(.)/) &#123;|x,y| print y, x &#125; #=&gt; rceu lowlr</div></pre></td></tr></table></figure>
+<h2 id="如何进行匹配"><a href="#如何进行匹配" class="headerlink" title="如何进行匹配"></a>如何进行匹配</h2><p>这部分不是讲匹配背后的原理（匹配原理，<a href="http://blog.csdn.net/lxcnn/article/details/4304651" target="_blank" rel="external">中文传送门</a>），而是介绍如何高效正确地书写正则表达式。首先列一下常用reference。</p>
+<p>几点说明：</p>
+<ul>
+<li>1、正则表达式支持Range，不仅可以利用模式中的Range，也可以利用字符串中Range，如代码所示，可以匹配输入行的开始和结尾</li>
+<li>2、如果要匹配下面的字符，需要进行转义 ： | ( ) [ ] { } + \ ^ $ * ?</li>
+<li><p>3、可以对上表进行如下分类：</p>
+<ul>
+<li>锚点（Anchor）^（表示字符串开始）$\A\Z\z\B\b ：\Z matches the end of a string unless the string ends with \n, in which case it matches just before the \n.<ul>
+<li>字符匹配的类型：[]、[^]以及上图中第二列的部分，这里还有一个The POSIX character classes和字符编码的问题，稍后补齐</li>
+<li>重复匹配：主要是第三列，较高优先级/AB+/是匹配含有字符A后接不少于一个B的字符串（ABBBB），而不是匹配含有不少于一个（AB）的字符串（ABABAB）当然这就有一个匹配次数的问题，具体见下文的“贪婪匹配vs懒惰匹配”</li>
+<li>交替（Alternation）：| 低优先级</li>
+<li>分组：（），分组为正则表达式提供更丰富的组合。关于分组的情况，在下面会有详细介绍。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">#匹配固定模式的输入：以Start开始，以end结尾的字符串</div><div class="line">while line = gets</div><div class="line">    puts line if line =~ /start/ .. line =~ /end/</div><div class="line">end</div><div class="line">#MatchData对象的API，见下一小节</div><div class="line">    def show_regexp(string, pattern)</div><div class="line">    match = pattern.match(string)</div><div class="line">    if match</div><div class="line">        &quot;#&#123;match.pre_match&#125;-&gt;#&#123;match[0]&#125;&lt;-#&#123;match.post_match&#125;&quot;</div><div class="line">    else</div><div class="line">    &quot;no match&quot;</div><div class="line">    end</div><div class="line">end</div><div class="line"></div><div class="line">#锚点</div><div class="line">str = &quot;this is\nthe time&quot;</div><div class="line">show_regexp(str, /^the/) # =&gt; this is\n-&gt;the&lt;- time</div><div class="line">show_regexp(str, /is$/) # =&gt; this -&gt;is&lt;-\nthe time</div><div class="line">show_regexp(str, /\Athis/) # =&gt; -&gt;this&lt;- is\nthe time</div><div class="line">show_regexp(str, /\Athe/) # =&gt; no match</div><div class="line">show_regexp(&quot;this is\nthe time&quot;, /\bis/) # =&gt; this -&gt;is&lt;-\nthe time</div><div class="line">show_regexp(&quot;this is\nthe time&quot;, /\Bis/) # =&gt; th-&gt;is&lt;- is\nthe time</div><div class="line"></div><div class="line">#字符匹配的类型</div><div class="line">show_regexp(&apos;Price $12.&apos;, /[^A-Z]/) # =&gt; P-&gt;r&lt;-ice $12.</div><div class="line">show_regexp(&apos;Price $12.&apos;, /[^\w]/) # =&gt; Price-&gt; &lt;-$12.</div><div class="line">show_regexp(&apos;Price $12.&apos;, /[a-z][^a-z]/) # =&gt; Pric-&gt;e &lt;-$12.</div><div class="line">show_regexp(&apos;It costs $12.&apos;, /\s/) # =&gt; It-&gt; &lt;-costs $12.</div><div class="line">show_regexp(&apos;It costs $12.&apos;, /\d/) # =&gt; It costs $-&gt;1&lt;-2.</div><div class="line"></div><div class="line">#重复匹配</div><div class="line">a = &quot;The moon is made of cheese&quot;</div><div class="line">show_regexp(a, /\w+/) # =&gt; -&gt;The&lt;- moon is made of cheese</div><div class="line">show_regexp(a, /\s.*\s/) # =&gt; The-&gt; moon is made of &lt;-cheese</div><div class="line">show_regexp(a, /\s.*?\s/) # =&gt; The-&gt; moon &lt;-is made of cheese</div><div class="line">show_regexp(a, /[aeiou]&#123;2,99&#125;/) # =&gt; The m-&gt;oo&lt;-n is made of cheese</div><div class="line">show_regexp(a, /mo?o/) # =&gt; The -&gt;moo&lt;-n is made of cheese</div><div class="line"># here&apos;s the lazy version</div><div class="line">show_regexp(a, /mo??o/) # =&gt; The -&gt;mo&lt;-on is made of cheese</div><div class="line"></div><div class="line">＃重复具有较高优先级</div><div class="line"># This matches an &apos;a&apos; followed by one or more &apos;n&apos;s</div><div class="line">show_regexp(&apos;banana&apos;, /an+/) # =&gt; b-&gt;an&lt;-ana</div><div class="line"># This matches the sequence &apos;an&apos; one or more times</div><div class="line">show_regexp(&apos;banana&apos;, /(an)+/) # =&gt; b-&gt;anan&lt;-a</div><div class="line"></div><div class="line">＃Alter nation</div><div class="line">show_regexp(“red ball blue sky”, /red ball|angry sky/) # =&gt; -&gt;red ball&lt;- blue sky</div><div class="line">show_regexp(“red ball blue sky”, /red (ball|angry) sky/) # =&gt; no match</div></pre></td></tr></table></figure>
+<h2 id="字符串的替换"><a href="#字符串的替换" class="headerlink" title="字符串的替换"></a>字符串的替换</h2><ul>
+<li>很多时候匹配是为了替换，Ruby中进行正则替换非常简单，两个方法即可搞定，sub()+gsub()。sub只替换第一次匹配，gsub（g:global）会替换所有的匹配，没有匹配到返回原字符串的copy</li>
+<li>如果想修改原始字符串用sub!()和gsub!()，没有匹配到返回nil。</li>
+<li>sub或者gsub方法参数除了可以传入替换的字符串之外，还可以接block，对匹配的字符串进行block内的操作</li>
+<li>除此之外， 还有一种惯用的替换方法(Ruby 1.9以上), 通过hash方式替换</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">#返回信值</div><div class="line">a = &quot;quick brown fox&quot;</div><div class="line">a.sub(/[aeiou]/, &apos;*&apos;) # =&gt; &quot;q*ick brown fox&quot;</div><div class="line">a.gsub(/[aeiou]/, &apos;*&apos;) # =&gt; &quot;q**ck br*wn f*x&quot;</div><div class="line">a.sub(/\s\S+/, &apos;&apos;) # =&gt; &quot;quick fox&quot;</div><div class="line">a.gsub(/\s\S+/, &apos;&apos;) # =&gt; &quot;quick&quot;</div><div class="line">a.sub(/\d/, &apos;&apos;) # =&gt; &quot;quick brown fox&quot; (注意这里)</div><div class="line">p a      #=&gt;&quot;quick brown fox&quot;</div><div class="line"></div><div class="line">#原地替换</div><div class="line">a.gsub!(/\s\S+/, &apos;&apos;) # =&gt; &quot;quick&quot;</div><div class="line">p a      # =&gt; &quot;quick&quot;</div><div class="line">a = &quot;quick brown fox&quot;</div><div class="line">a.sub!(/\s\S+/, &apos;&apos;) # =&gt; &quot;quick fox&quot;</div><div class="line">p a     # =&gt; &quot;quick fox&quot;</div><div class="line"></div><div class="line"></div><div class="line">#后接Block</div><div class="line">a = &quot;quick brown fox&quot;</div><div class="line">a.sub(/^./) &#123;|match| match.upcase &#125; # =&gt; &quot;Quick brown fox&quot;</div><div class="line">a.gsub(/[aeiou]/) &#123;|vowel| vowel.upcase &#125; # =&gt; &quot;qUIck brOwn fOx&quot;</div><div class="line"></div><div class="line">#hash替换，更加直接</div><div class="line"> replacement = &#123; &quot;cat&quot; =&gt; &quot;feline&quot;, &quot;dog&quot; =&gt; &quot;canine&quot; &#125; #不能用正则表达式</div><div class="line"> replacement.default = &quot;unknown&quot;</div><div class="line"> &quot;cat and dog&quot;.gsub(/\w+/, replacement) # =&gt; &quot;feline unknown canine&quot;</div></pre></td></tr></table></figure>
+<h2 id="分组匹配"><a href="#分组匹配" class="headerlink" title="分组匹配"></a>分组匹配</h2><ul>
+<li>分组的一个很重要的应用是查找不同形式的重复，对于分组，我们会根据园括号对数进行编号，从1开始，通过\n就可以引用第n个括号所匹配的结果，从而达到匹配重复模式的效果,其中n的数量与括号的数量应该是一致的，大家可以试下引用\n+1的会出现什么情况，当然还有括号套括号的情况对于数字的变化，会更佳有益于对\n的理解。</li>
+<li>我们也可以给某个分组命令，通过名字而不是数字进行匹配，会更便于理解。命名方式如下：（ ?pattern ）引用方式为 \k (or \k’name’).</li>
+<li>⚠️当然使用=~进行匹配时，且模式在=~左边时，匹配名可以当做局部变量进行使用。</li>
+<li>命名匹配的方式同样适应于字符串的替换<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># 理解\n的含义,</div><div class="line">p /(\w)(\w)\1\2/.match(&apos;He said &quot;hehellllo&quot;&apos;) #=&gt;#&lt;MatchData &quot;hehe&quot; 1:&quot;h&quot; 2:&quot;e&quot;&gt;</div><div class="line">p /(\w)(\w)\1\2/.match(&apos;He said &quot;Hehellllo&quot;&apos;) #=&gt; #&lt;MatchData &quot;llll&quot; 1:&quot;l&quot; 2:&quot;l&quot;&gt;</div><div class="line"></div><div class="line"># match duplicated letter</div><div class="line">show_regexp(&apos;He said &quot;Hello&quot;&apos;, /(\w)\1/) # =&gt; He said &quot;He-&gt;ll&lt;-o&quot;</div><div class="line"># match duplicated substrings</div><div class="line">show_regexp(&apos;Mississippi&apos;, /(\w+)\1/) # =&gt; M-&gt;ississ&lt;-ippi</div><div class="line"></div><div class="line">#using name</div><div class="line"># match duplicated letter</div><div class="line">str = &apos;He said &quot;Hello&quot;&apos;</div><div class="line">show_regexp(str, /(?&lt;char&gt;\w)\k&lt;char&gt;/) # =&gt; He said &quot;He-&gt;ll&lt;-o&quot;</div><div class="line"># match duplicated adjacent substrings</div><div class="line">str = &apos;Mississippi&apos;</div><div class="line">show_regexp(str, /(?&lt;seq&gt;\w+)\k&apos;seq&apos;/) # =&gt; M-&gt;ississ&lt;-ippi</div><div class="line"></div><div class="line">/(?&lt;hour&gt;\d\d):(?&lt;min&gt;\d\d)(..)/ =~ &quot;12:50am&quot; # =&gt; 0</div><div class="line">&quot;Hour is #&#123;hour&#125;, minute #&#123;min&#125;&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line"># You can mix named and position-based references</div><div class="line">&quot;Hour is #&#123;hour&#125;, minute #&#123;$2&#125;&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line">&quot;Hour is #&#123;$1&#125;, minute #&#123;min&#125;&quot; # =&gt; &quot;Hour is 12, minute 50&quot;</div><div class="line"></div><div class="line">puts &quot;fred:smith&quot;.sub(/(\w+):(\w+)/, &apos;\2, \1&apos;)  #=&gt;smith, fred</div><div class="line">puts &quot;nercpyitno&quot;.gsub(/(?&lt;c1&gt;.)(?&lt;c2&gt;.)/, &apos;\k&lt;c2&gt;\k&lt;c1&gt;&apos;) #=&gt; encryption</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="贪婪匹配vs懒惰匹配"><a href="#贪婪匹配vs懒惰匹配" class="headerlink" title="贪婪匹配vs懒惰匹配"></a>贪婪匹配vs懒惰匹配</h2><p>这两种匹配属于标准正则表达式内容，与Ruby没关，但新手如果不明白匹配时会发生莫名其妙的错误，所以特别总结一下。</p>
+<ul>
+<li>贪婪匹配：尽可能多匹配，正则默认是贪婪匹配。例子：a.*b它将会匹配最长的以a开始，以b结束的字符串。对于aabab的匹配结果是aabab。</li>
+<li>懒惰匹配：尽可能少匹配。例子：a.*?b对于aabab的匹配结果是aab和ab。<br>一般是在原来表达式结尾加?就由贪婪匹配变成了懒惰匹配。常用的懒惰限定符有（去年最后的问题就是贪婪匹配）：<ul>
+<li>?重复任意次，但尽可能少重复</li>
+<li>+?重复1次或更多次，但尽可能少重复</li>
+<li>??重复0次或1次，但尽可能少重复</li>
+<li>{n,m}?重复n到m次，但尽可能少重复</li>
+<li>{n,}?重复n次以上，但尽可能少重复</li>
+</ul>
+</li>
+</ul>
+<h1 id="后续补充"><a href="#后续补充" class="headerlink" title="后续补充"></a>后续补充</h1><p>1、 backtracking<br>2、Regular Expression Extensions<br>3、Backreferences and Named Matches</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://ruby-doc.org/core-2.1.1/Regexp.html" target="_blank" rel="external">http://ruby-doc.org/core-2.1.1/Regexp.html</a></p>
+<p><a href="http://ruby-doc.org/core-2.1.2/String.html#method-i-scanregexp.rb" target="_blank" rel="external">http://ruby-doc.org/core-2.1.2/String.html#method-i-scan<br>regexp.rb</a></p>
+<p>Programming Ruby 4th《第7章》</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ruby/" rel="tag"># Ruby</a>
+          
+            <a href="/tags/正则表达式/" rel="tag"># 正则表达式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/22/读书笔记-Objective-C高级编程-引用计数/" rel="next" title="读书笔记 | Objective-C高级编程-引用计数">
+                <i class="fa fa-chevron-left"></i> 读书笔记 | Objective-C高级编程-引用计数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avartar.jpg"
+              alt="HoCooler" />
+          
+            <p class="site-author-name" itemprop="name">HoCooler</p>
+            <p class="site-description motion-element" itemprop="description">iOS</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ruby中正则表达式定义"><span class="nav-number">1.</span> <span class="nav-text">Ruby中正则表达式定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式的定义"><span class="nav-number">1.1.</span> <span class="nav-text">正则表达式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式作用"><span class="nav-number">1.2.</span> <span class="nav-text">正则表达式作用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ruby中正则表达式用法"><span class="nav-number">2.</span> <span class="nav-text">Ruby中正则表达式用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式匹配结果"><span class="nav-number">2.1.</span> <span class="nav-text">正则表达式匹配结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#＝"><span class="nav-number">2.1.1.</span> <span class="nav-text">＝~</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#match方法"><span class="nav-number">2.1.2.</span> <span class="nav-text">match方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String中的scan方法"><span class="nav-number">2.1.3.</span> <span class="nav-text">String中的scan方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何进行匹配"><span class="nav-number">2.2.</span> <span class="nav-text">如何进行匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串的替换"><span class="nav-number">2.3.</span> <span class="nav-text">字符串的替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组匹配"><span class="nav-number">2.4.</span> <span class="nav-text">分组匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贪婪匹配vs懒惰匹配"><span class="nav-number">2.5.</span> <span class="nav-text">贪婪匹配vs懒惰匹配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后续补充"><span class="nav-number">3.</span> <span class="nav-text">后续补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HoCooler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

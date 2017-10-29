@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="KVO 官方翻译文档 KVC Collection Operators">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide/index.html">
+<meta property="og:site_name" content="Cooler&#39;s Home">
+<meta property="og:description" content="KVO 官方翻译文档 KVC Collection Operators">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/pasted-0.png">
+<meta property="og:updated_time" content="2017-09-14T09:56:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide">
+<meta name="twitter:description" content="KVO 官方翻译文档 KVC Collection Operators">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide/"/>
+
+
+
+
+
+  <title>文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide | Cooler's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooler's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">日积月累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-分类"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HoCooler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooler's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T17:55:26+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>KVO 官方翻译文档</p>
+<p>KVC Collection Operators</p>
+<a id="more"></a>
+<h1 id="注册方式"><a href="#注册方式" class="headerlink" title="注册方式"></a>注册方式</h1><blockquote>
+<p>addObserver:(NSObject )observer forKeyPath:(NSString )keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;</p>
+<p>The context pointer can be a C pointer or an object reference. The context pointer can be used as a unique identifier to determine the change that is being observed, or to provide some other data to the observer.</p>
+<p>Note:<br>The key-value observing addObserver:forKeyPath:options:context: method does not maintain strong references to the observing object, the observed objects, or the context. You should ensure that you maintain strong references to the observing, and observed, objects, and the context as necessary.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)registerAsObserver &#123;</div><div class="line">   /*</div><div class="line">   Register &apos;inspector&apos; to receive change notifications for the &quot;openingBalance&quot; property of the &apos;account&apos; object and specify that both the old and new values of &quot;openingBalance&quot; should be provided in the observe… method.</div><div class="line">   */</div><div class="line">    [account addObserver:inspector</div><div class="line">             forKeyPath:@&quot;openingBalance&quot;</div><div class="line">                options:(NSKeyValueObservingOptionNew |</div><div class="line">                            NSKeyValueObservingOptionOld)</div><div class="line">                    context:NULL];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果Value属性是个对象，直接传递，如果是the property is a scalar or a C structure,通过KVC取值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (void)observeValueForKeyPath:(NSString *)keyPath</div><div class="line">                      ofObject:(id)object</div><div class="line">                        change:(NSDictionary *)change</div><div class="line">                       context:(void *)context &#123;</div><div class="line">    if ([keyPath isEqual:@&quot;openingBalance&quot;]) &#123;</div><div class="line">        [openingBalanceInspectorField setObjectValue:</div><div class="line">            [change objectForKey:NSKeyValueChangeNewKey]];</div><div class="line">    &#125;</div><div class="line">    /*</div><div class="line">    Be sure to call the superclass&apos;s implementation *if it implements it*.</div><div class="line">     NSObject does not implement the method.</div><div class="line">     */</div><div class="line">    [super observeValueForKeyPath:keyPath</div><div class="line">                         ofObject:object</div><div class="line">                           change:change</div><div class="line">                           context:context];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果context是个对象，在remove前必须保持强持有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[observedObject removeObserver:inspector forKeyPath:@&quot;openingBalance&quot;];</div></pre></td></tr></table></figure>
+<h1 id="KVO-Compliance"><a href="#KVO-Compliance" class="headerlink" title="KVO Compliance"></a>KVO Compliance</h1><p><code>前提</code></p>
+<ul>
+<li>该类提供必要的方法使这个property 是KVC Compliant的。</li>
+<li>这个类能正确发出KVO change notification；</li>
+<li>若某个Property依赖于其他几个Property（称为dependent keys），都应该被注册好.</li>
+</ul>
+<h2 id="自动KVO"><a href="#自动KVO" class="headerlink" title="自动KVO"></a>自动KVO</h2><p>如果我们使用Accessor方法或者KVC 方法（setValue:forKey setValue:forKeyPath等）改变属性的值都会自动发出notification。</p>
+<h2 id="手动KVO"><a href="#手动KVO" class="headerlink" title="手动KVO"></a>手动KVO</h2><p>Manual change notification往往配合automaticallyNotifiesObserversForKey:一起使用。如果一个Property已经是KVC Compliant的了，那意味着这个Property已经默认支持automatic notification了，我们要让其做manaul notification，就要覆盖automaticallyNotifiesObserversForKey:，使其不要多automatic notification。但是如果一个instance variable或者attribute并不是KVC Compliance的，而它仍然希望发出notification，那么就不需要覆盖automaticallyNotifiesObserversForKey:了。下面是一个automaticallyNotifiesObserversForKey:的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey &#123;</div><div class="line">    BOOL automatic = NO;</div><div class="line">    if ([theKey isEqualToString:@&quot;openingBalance&quot;]) &#123;</div><div class="line">        automatic = NO;</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        automatic = [super automaticallyNotifiesObserversForKey:theKey];</div><div class="line">    &#125;</div><div class="line">    return automatic;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将automatic notification关闭后，就需要调用willChangeValueForKey:didChangeValueForKey：来实现通知行为，如果一个操作导致多个key发生变化，需要嵌套调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> - (void)setOpeningBalance:(double)theBalance &#123;</div><div class="line">    if (theBalance != _openingBalance) &#123; //优化</div><div class="line">        [self willChangeValueForKey:@&quot;openingBalance&quot;];</div><div class="line">        [self willChangeValueForKey:@&quot;itemChanged&quot;];</div><div class="line">        _openingBalance = theBalance;</div><div class="line">        _itemChanged = _itemChanged+1;</div><div class="line">        [self didChangeValueForKey:@&quot;itemChanged&quot;];</div><div class="line">        [self didChangeValueForKey:@&quot;openingBalance&quot;];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&gt;<br>In the case of an ordered to-many relationship, you must specify not only the key that changed, but also the type of change and the indexes of the objects involved. The type of change is an NSKeyValueChange that specifies NSKeyValueChangeInsertion, NSKeyValueChangeRemoval, or NSKeyValueChangeReplacement. The indexes of the affected objects are passed as an NSIndexSet object.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (void)removeTransactionsAtIndexes:(NSIndexSet *)indexes &#123;</div><div class="line">    [self willChange:NSKeyValueChangeRemoval</div><div class="line">        valuesAtIndexes:indexes forKey:@&quot;transactions&quot;];</div><div class="line">    // Remove the transaction objects at the specified indexes.</div><div class="line"></div><div class="line">    [self didChange:NSKeyValueChangeRemoval</div><div class="line">        valuesAtIndexes:indexes forKey:@&quot;transactions&quot;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Registering-Dependent-Keys"><a href="#Registering-Dependent-Keys" class="headerlink" title="Registering Dependent Keys"></a>Registering Dependent Keys</h2><p>property 的值依赖于其他对象的多个属性时，如何解决</p>
+<h3 id="对某个属性（应该是说有限长度的属性）计算属性"><a href="#对某个属性（应该是说有限长度的属性）计算属性" class="headerlink" title="对某个属性（应该是说有限长度的属性）计算属性"></a>对某个属性（应该是说有限长度的属性）计算属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (NSString *)fullName &#123;</div><div class="line">  return [NSString stringWithFormat:@&quot;%@ %@&quot;,firstName, lastName];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一是可以覆盖keyPathsForValuesAffectingValueForKey:(NSString *)key方法，先调用super，在添加keyPath</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key &#123;</div><div class="line">  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];</div><div class="line">  if ([key isEqualToString:@&quot;fullName&quot;]) &#123;</div><div class="line">    NSArray *affectingKeys = @[@&quot;lastName&quot;, @&quot;firstName&quot;];</div><div class="line">    keyPaths = [keyPaths setByAddingObjectsFromArray:affectingKeys];</div><div class="line">  &#125;</div><div class="line">  return keyPaths;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>二是也可以通过遵循 naming convention 的 class method 来完成同样的功能用keyPathsForValuesAffecting方式生成keyPath</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+ (NSSet *)keyPathsForValuesAffectingFullName &#123;</div><div class="line">  return [NSSet setWithObjects:@&quot;lastName&quot;, @&quot;firstName&quot;, nil];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&gt;<br>Note：<br>You can’t override the keyPathsForValuesAffectingValueForKey: method when you add a computed property to an existing class using a category, because you’re not supposed to override methods in categories. In that case, implement a matching keyPathsForValuesAffecting class method to take advantage of this mechanism.</p>
+<h3 id="对多：（应该是指不定长度）"><a href="#对多：（应该是指不定长度）" class="headerlink" title="对多：（应该是指不定长度）"></a>对多：（应该是指不定长度）</h3><p>情景：某部门有多个员工，你需要有这个部门所有员工的工资属性，这时不能用keyPathsForValuesAffectingTotalSalary 并且返回employees.salary作为key</p>
+<ul>
+<li>你可以多其父类（部门）进行KVO，对相关的孩子（员工）进行观察。并且在observeValueForKeyPath:ofObject:change:context: 方法中更新变化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context &#123;</div><div class="line">  if (context == totalSalaryContext) &#123;</div><div class="line">      [self updateTotalSalary];</div><div class="line">  &#125;</div><div class="line">  else</div><div class="line">  // deal with other observations and/or invoke super..</div><div class="line">  &#125;</div><div class="line">- (void)updateTotalSalary &#123;</div><div class="line">    [self setTotalSalary:[self valueForKeyPath:@&quot;employees.@sum.salary&quot;]];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)setTotalSalary:(NSNumber *)newTotalSalary &#123;</div><div class="line">    if (totalSalary != newTotalSalary) &#123;</div><div class="line">        [self willChangeValueForKey:@&quot;totalSalary&quot;];</div><div class="line">        _totalSalary = newTotalSalary;</div><div class="line">        [self didChangeValueForKey:@&quot;totalSalary&quot;];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">- (NSNumber *)totalSalary &#123;</div><div class="line">    return _totalSalary;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Core Data<br>If you’re using Core Data, you can register the parent with the application’s notification center as an observer of its managed object context. The parent should respond to relevant change notifications posted by the children in a manner similar to that for key-value observing</li>
+</ul>
+<h3 id="实现原理："><a href="#实现原理：" class="headerlink" title="实现原理："></a>实现原理：</h3><p>自动KVO是通过 isa-swizzling实现的</p>
+<p><img src="/images/pasted-0.png" alt="upload successful"></p>
+<p>实例isa指针之乡对象类（Class A），里面有类实现方法及数据。当有观察者注册对象的属性后，isa指向SubClassA，因此实际的isa指针并不能真正反映出实例的真实类。</p>
+<p>因此，不能依靠isa决定类的关系，而通过class method的方法。</p>
+<p><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA" target="_blank" rel="external">原文地址</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/+load && +initialize 使用/" rel="next" title="+load && +initialize 使用">
+                <i class="fa fa-chevron-left"></i> +load && +initialize 使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/开源库学习-AFNetWorking-（一）使用/" rel="prev" title="开源库学习 | AFNetWorking （一）使用">
+                开源库学习 | AFNetWorking （一）使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avartar.jpg"
+              alt="HoCooler" />
+          
+            <p class="site-author-name" itemprop="name">HoCooler</p>
+            <p class="site-description motion-element" itemprop="description">iOS</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注册方式"><span class="nav-number">1.</span> <span class="nav-text">注册方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KVO-Compliance"><span class="nav-number">2.</span> <span class="nav-text">KVO Compliance</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动KVO"><span class="nav-number">2.1.</span> <span class="nav-text">自动KVO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动KVO"><span class="nav-number">2.2.</span> <span class="nav-text">手动KVO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Registering-Dependent-Keys"><span class="nav-number">2.3.</span> <span class="nav-text">Registering Dependent Keys</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对某个属性（应该是说有限长度的属性）计算属性"><span class="nav-number">2.3.1.</span> <span class="nav-text">对某个属性（应该是说有限长度的属性）计算属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对多：（应该是指不定长度）"><span class="nav-number">2.3.2.</span> <span class="nav-text">对多：（应该是指不定长度）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理："><span class="nav-number">2.3.3.</span> <span class="nav-text">实现原理：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HoCooler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="load,initialize," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="+load &amp;amp;&amp;amp; +initialize 作用、加载次序（Category）">
+<meta name="keywords" content="load,initialize">
+<meta property="og:type" content="article">
+<meta property="og:title" content="+load &amp;&amp; +initialize 使用">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/+load && +initialize 使用/index.html">
+<meta property="og:site_name" content="Cooler&#39;s Home">
+<meta property="og:description" content="+load &amp;amp;&amp;amp; +initialize 作用、加载次序（Category）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-14T08:46:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="+load &amp;&amp; +initialize 使用">
+<meta name="twitter:description" content="+load &amp;amp;&amp;amp; +initialize 作用、加载次序（Category）">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/+load && +initialize 使用/"/>
+
+
+
+
+
+  <title>+load && +initialize 使用 | Cooler's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooler's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">日积月累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-分类"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/+load && +initialize 使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HoCooler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooler's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">+load && +initialize 使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-11T16:57:00+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/原创/" itemprop="url" rel="index">
+                    <span itemprop="name">原创</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>+load &amp;&amp; +initialize 作用、加载次序（Category）</p>
+<a id="more"></a>
+<h1 id="load"><a href="#load" class="headerlink" title="+load"></a>+load</h1><h2 id="load-定义"><a href="#load-定义" class="headerlink" title="+load 定义"></a>+load 定义</h2><blockquote>
+<p>Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.</p>
+</blockquote>
+<p>通过关键字可以看出</p>
+<ul>
+<li>作用：“perform class-specific behavior upon loading” 在类加载前执行类的一些行为</li>
+<li>条件：“whenever a class or category is added” 在类中或者分类中添加（被加载时）就会被调用，猜测：这里如果为了优化，应该在编译期间，就把实现+load的类通过放在某个列表中，然后依次执行，或者在类中有个标记。为什么不是Cocoa中比较流行的注册机制，因为被加载时，运行时系统是“脆弱”的，只加载了基本的框架（Foundation），详见下文。</li>
+<li>方式：“runtime” 也是通过运行时进行加载。看下面的“message”</li>
+</ul>
+<blockquote>
+<p>The load message is sent to classes and categories that are both dynamically loaded and statically linked, but only if the newly loaded class or category implements a method that can respond.</p>
+</blockquote>
+<p>当类或者分类可以响应load方法时，才发送load消息，但此时该类已经动态加载和静态链接的。</p>
+<h2 id="关于-load加载时机"><a href="#关于-load加载时机" class="headerlink" title="关于+load加载时机"></a>关于+load加载时机</h2><ul>
+<li>程序初始化步骤：<blockquote>
+<p>The order of initialization is as follows:<br>All initializers in any framework you link to.<br>All +load methods in your image.<br>All C++ static initializers and C/C++ attribute(constructor)  &gt; functions in your image.<br>All initializers in frameworks that link to you.</p>
+</blockquote>
+</li>
+</ul>
+<p>但是这个2 和 3 的顺序是跟WWDC 2016 相反的<br>但是总体都是说初始化FrameWork → +load → main()函数 → 类的 initialize 方法 → 根据生命周期调用类的其他方法.</p>
+<p>其中image的意思是：资源(WWDC 2016)</p>
+<blockquote>
+<p>File Types:</p>
+<p>Executable—Main binary for application<br>Dylib—Dynamic library (aka DSO or DLL)<br>Bundle—Dylib that cannot be linked, only dlopen(), e.g. plug-ins<br>Image—An executable, dylib, or bundle</p>
+</blockquote>
+<h2 id="load的次序"><a href="#load的次序" class="headerlink" title="+load的次序"></a>+load的次序</h2><blockquote>
+<p>A class’s +load method is called after all of its superclasses’ +load methods.<br>A category +load method is called after the class’s own +load method.</p>
+</blockquote>
+<ul>
+<li>对于子类和父类，类和分类的调用顺序已经写明: </li>
+</ul>
+<p>1、先调用超类的+load ，在调用子类的+load;</p>
+<p>2、先调用完所有类的+load，在调用分类的+load。</p>
+<ul>
+<li>那么其他文件的+load调用顺序是怎么样的？</li>
+</ul>
+<p>[图片]</p>
+<p>与 Build Phases 中的 Compile Sources 顺序一致。<br>同一个类的分类调用顺序是怎么样的？<br>与 Build Phases 中的 Compile Sources 顺序一致。</p>
+<ul>
+<li>概括：</li>
+</ul>
+<p>1、先调用超类的+load ，在调用子类的+load<br>2、先调用完所有类的+load，在调用分类的+load，即分类的+load总是会放在最后类的后面<br>3、按照Compile Sources 顺序执行</p>
+<h2 id="load的注意事项："><a href="#load的注意事项：" class="headerlink" title="+load的注意事项："></a>+load的注意事项：</h2><blockquote>
+<p>In a custom implementation of load you can therefore safely message other unrelated classes from the same image, but any load methods implemented by those classes may not have run yet.</p>
+</blockquote>
+<ul>
+<li>在+load方法中，我们可以安全的给不相关的类发消息，但是+load方法中不应该调用他们</li>
+</ul>
+<blockquote>
+<p>Custom implementations of the load method for Swift classes bridged to Objective-C are not called automatically.</p>
+</blockquote>
+<ul>
+<li><p>swift 桥接到OC的混合编程中，swift的自定义的+load实现 不会自动调用。</p>
+</li>
+<li><p>因为+load在启动前就加载运行，过度的使用会影响首页加载时间</p>
+</li>
+</ul>
+<h1 id="initialize"><a href="#initialize" class="headerlink" title="+initialize"></a>+initialize</h1><ul>
+<li><p>时机：类第一次被调用时</p>
+<blockquote>
+<p>Initializes the class before it receives its first message.</p>
+</blockquote>
+</li>
+<li><p>执行顺序<br>父类 优先 子类调用 initialize</p>
+</li>
+</ul>
+<p>该类的方法在其他类+load时期被调用，那么initialize调用，而后该类的+load在调用，因此+initialize可以比+load先调用</p>
+<p>category 的覆写效应对 load 方法无效，但对 initialize 方法有效。且按 Complile Sources 的顺序，后面的会覆盖前面的。</p>
+<ul>
+<li><p>initialize是线程安全的，其他线程需要等待第一个执行完执行完之后在进行执行。可以理解为@synchronized(self),因此注意，在initialize中只进行必要初始化操作</p>
+</li>
+<li><p>父类的initialize会被调用多次，因此注意下副作用。因为存在子类没实现initialize或者子类主动调用initialize的情况</p>
+</li>
+</ul>
+<p>如果想避免，可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+ (void)initialize &#123;</div><div class="line">  if (self == [ClassName self]) &#123;</div><div class="line">    // ... do the initialization ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>initialize is invoked only once per class. If you want to perform independent initialization for the class and for categories of the class, you should implement load methods.</p>
+</blockquote>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><ul>
+<li><p>+load 和 + initialize 只被调用一次，是指启动时runtime机制而言，他们也可以被当做普通的类方法被调用，但是一般别这么使用。</p>
+</li>
+<li><p>如果子类没有实现+load和+initialize， 会调用父类的+load和父类的initialize方法。</p>
+</li>
+<li><p>category 不会覆盖类的+load，但是会覆盖类的+initialize</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/load/" rel="tag"># load</a>
+          
+            <a href="/tags/initialize/" rel="tag"># initialize</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide/" rel="prev" title="文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide">
+                文档翻译｜KVO ：Introduction to Key-Value Observing Programming Guide <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avartar.jpg"
+              alt="HoCooler" />
+          
+            <p class="site-author-name" itemprop="name">HoCooler</p>
+            <p class="site-description motion-element" itemprop="description">iOS</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#load"><span class="nav-number">1.</span> <span class="nav-text">+load</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#load-定义"><span class="nav-number">1.1.</span> <span class="nav-text">+load 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-load加载时机"><span class="nav-number">1.2.</span> <span class="nav-text">关于+load加载时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load的次序"><span class="nav-number">1.3.</span> <span class="nav-text">+load的次序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load的注意事项："><span class="nav-number">1.4.</span> <span class="nav-text">+load的注意事项：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#initialize"><span class="nav-number">2.</span> <span class="nav-text">+initialize</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最后"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HoCooler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

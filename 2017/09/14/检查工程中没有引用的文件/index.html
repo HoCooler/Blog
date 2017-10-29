@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="检查工程中没有引用到的文件，对于要求保证工程质量的业务团队而言至关重要，这也是工程瘦身的第一步，非常适应于业务需求变更频繁的团队">
+<meta property="og:type" content="article">
+<meta property="og:title" content="检查工程中没有引用的文件">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/检查工程中没有引用的文件/index.html">
+<meta property="og:site_name" content="Cooler&#39;s Home">
+<meta property="og:description" content="检查工程中没有引用到的文件，对于要求保证工程质量的业务团队而言至关重要，这也是工程瘦身的第一步，非常适应于业务需求变更频繁的团队">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-14T12:43:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="检查工程中没有引用的文件">
+<meta name="twitter:description" content="检查工程中没有引用到的文件，对于要求保证工程质量的业务团队而言至关重要，这也是工程瘦身的第一步，非常适应于业务需求变更频繁的团队">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/检查工程中没有引用的文件/"/>
+
+
+
+
+
+  <title>检查工程中没有引用的文件 | Cooler's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooler's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">日积月累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-关于我"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-分类"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/检查工程中没有引用的文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HoCooler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooler's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">检查工程中没有引用的文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T20:39:27+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>检查工程中没有引用到的文件，对于要求保证工程质量的业务团队而言至关重要，这也是工程瘦身的第一步，非常适应于业务需求变更频繁的团队</p>
+<a id="more"></a>
+<h1 id="脚本介绍"><a href="#脚本介绍" class="headerlink" title="脚本介绍"></a>脚本介绍</h1><p>可以检查工程中没有引用到的文件</p>
+<h2 id="脚本原理"><a href="#脚本原理" class="headerlink" title="脚本原理"></a>脚本原理</h2><p>首先检查文件名，存入allFileNameArray数组中，在检查每个文件下import的头文件，加入到allImportFileArray，从allImportFileArray剔除掉allFileNameArray（因为.m会引用一次.h），就是没有头文件引用的文件列表了。</p>
+<h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">//ruby</div><div class="line">def traverse_dir(file_path)</div><div class="line">  if File.directory? file_path</div><div class="line">    Dir.foreach(file_path) do |file|</div><div class="line">      if file!=&quot;.&quot; and file!=&quot;..&quot;</div><div class="line">        traverse_dir(file_path+&quot;/&quot;+file)&#123;|x| yield x&#125;</div><div class="line">      end</div><div class="line">    end</div><div class="line">  else</div><div class="line">    yield  file_path</div><div class="line">  end</div><div class="line">end</div><div class="line">path  = &quot;Poject Patch&quot;</div><div class="line">uselessFileArray = Array.new</div><div class="line">allFileNameArray = Array.new</div><div class="line">allImportFileArray = Array.new</div><div class="line">traverse_dir(path)&#123;|f|</div><div class="line">  if f.to_s =~ /\.h$/</div><div class="line">    file_name = f.to_s.split(&apos;/&apos;).last</div><div class="line">    allFileNameArray &lt;&lt; &quot;#&#123;file_name&#125;&quot;</div><div class="line">  end</div><div class="line">  if f.to_s() =~ /\.h$/ || f.to_s() =~ /\.m$/</div><div class="line">    IO.readlines(f).each.with_index &#123; |line, index|</div><div class="line">      if ! line.valid_encoding?</div><div class="line">        line = line.encode(&quot;UTF-16be&quot;, :invalid=&gt;:replace, :replace=&gt;&quot;?&quot;).encode(&apos;UTF-8&apos;)</div><div class="line">      end</div><div class="line">      //import 对应iOS工程，可以修改成#include方式</div><div class="line">      if line =~ /^\#import \&quot;.*\.h\&quot;/</div><div class="line">        import_name = line.to_s.split(&apos;&quot;&apos;).at(-2)</div><div class="line">        allImportFileArray &lt;&lt; &quot;#&#123;import_name&#125;&quot;</div><div class="line">      end</div><div class="line">    &#125;</div><div class="line">  end</div><div class="line">&#125;</div><div class="line">allFileNameArray.each &#123; |item|</div><div class="line">  if allImportFileArray.count(item) &lt; 2</div><div class="line">    uselessFileArray &lt;&lt; item</div><div class="line">  end</div><div class="line">&#125;</div><div class="line">puts &quot;########################## The uselessFile Count : #&#123;uselessFileArray.count&#125; ###############################&quot;</div><div class="line">uselessFileArray.each &#123; |item|</div><div class="line">  puts item</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里只是简单对方法进行实现，可以对path进行输入，对文件类型进行检查等，方便使用其他工程</p>
+<h2 id="存在问题（iOS工程）："><a href="#存在问题（iOS工程）：" class="headerlink" title="存在问题（iOS工程）："></a>存在问题（iOS工程）：</h2><ul>
+<li><p>这样检查会遗漏动态方法组合VC名然后push，通过URL跳转进入的页面，需要再进一步手动全局搜索，进行排查。</p>
+</li>
+<li><p>delegate 无法检查</p>
+</li>
+</ul>
+<h1 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h1><p>如何进行工程中重复代码的检查？已有开源工具可供参考：</p>
+<h2 id="Simian"><a href="#Simian" class="headerlink" title="Simian"></a>Simian</h2><ul>
+<li>安装JDK 8，JDK低版本使用simian-2.4.0会报错</li>
+<li>下载simian最新版：<a href="http://www.harukizaemon.com/simian/simian-2.4.0.tar.gz" target="_blank" rel="external">地址</a>，解压，使用bin目录下的simian-2.4.0.jar</li>
+<li>执行命令：java -jar simian-2.4.0.jar -includes=’*/.m’ -reportDuplicateText -ignoreCurlyBraces -ignoreNumbers -threshold=20</li>
+</ul>
+<h2 id="PMD"><a href="#PMD" class="headerlink" title="PMD"></a>PMD</h2><ul>
+<li>安装pmd，使用homebrew：brew install pmd</li>
+<li><p>下载编译好的OC分析插件：<a href="https://github.com/mokemokechicken/Objective-C-CPD-Language/raw/master/releases/ObjCLanguage-0.0.8-SNAPSHOT.jar" target="_blank" rel="external">地址</a></p>
+</li>
+<li><p>将ObjCLanguage-0.0.8-SNAPSHOT.jar拷到pmd的目录下：/usr/local/Cellar/pmd/5.1.3/libexec/lib/</p>
+</li>
+<li>执行命令：pmd cpd –language ObjectiveC –minimum-tokens 50 –files projectPath</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/14/管理工具/" rel="next" title="管理工具">
+                <i class="fa fa-chevron-left"></i> 管理工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/18/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avartar.jpg"
+              alt="HoCooler" />
+          
+            <p class="site-author-name" itemprop="name">HoCooler</p>
+            <p class="site-description motion-element" itemprop="description">iOS</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#脚本介绍"><span class="nav-number">1.</span> <span class="nav-text">脚本介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本原理"><span class="nav-number">1.1.</span> <span class="nav-text">脚本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码："><span class="nav-number">1.2.</span> <span class="nav-text">代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在问题（iOS工程）："><span class="nav-number">1.3.</span> <span class="nav-text">存在问题（iOS工程）：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他工具"><span class="nav-number">2.</span> <span class="nav-text">其他工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Simian"><span class="nav-number">2.1.</span> <span class="nav-text">Simian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PMD"><span class="nav-number">2.2.</span> <span class="nav-text">PMD</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HoCooler</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
